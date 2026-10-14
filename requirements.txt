@@ -1,0 +1,13 @@
+# Campus Customs (Homework 5): Python packages for the backend agents and the MCP server.
+# Versions are the ones this project was built and run with (Python 3.14).
+#   python -m venv backend/.venv
+#   backend/.venv/Scripts/activate      (Windows)   or   source backend/.venv/bin/activate   (macOS/Linux)
+#   pip install -r requirements.txt
+# The MCP server keeps its own venv (mcp_server/.venv); mcp_server/run_server.py creates it from
+# mcp_server/requirements.txt the first time it starts.
+pydantic-ai-slim[openai,mcp]==2.55.0
+openai==3.29.0
+fastmcp==4.1.0
+fastapi==0.143.0
+uvicorn[standard]==0.54.0
+python-dotenv==1.2.4

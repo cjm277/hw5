@@ -1,0 +1,30 @@
+# --- Secrets: never commit real keys ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+
+# --- Front end ---
+node_modules/
+frontend/dist/
+*.local
+
+# --- Temporary and crash files ---
+*.tmp
+*.log
+output/audit_trail.json.tmp
+output/audit_trail.corrupt-*.json
+
+# --- Editor / OS ---
+.vscode/
+.idea/
+.claude/
+.DS_Store
+Thumbs.db
+
+# Note: data/ (both databases) and output/screenshots/ are committed on purpose.

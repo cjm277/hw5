@@ -1,0 +1,277 @@
+{
+  "description": "Smoke test of the campus-customs MCP server, called live from the vibe coder (Claude Code) through .mcp.json.",
+  "mcp_server": "mcp_server/server.py (FastMCP, stdio; the file was named mcp_server.py when this test ran)",
+  "database": "data/campus_customs_new.db",
+  "database_sha256_after_tests": "23686a90d698f7fa6f901a3f0a9774db9cbb31e13151c9e5717275f3321f360a",
+  "original_database_unchanged": true,
+  "shop_today": "2026-08-31",
+  "run_at": "2026-10-12T21:02:35-04:00",
+  "summary": {
+    "total": 10,
+    "passed_db_check": 10
+  },
+  "tests": [
+    {
+      "id": "check_stock_1",
+      "prompt": "I need 20 size medium hoodies, how many do we have?",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty_needed": 20
+      },
+      "is_error": false,
+      "output": {
+        "sku": "CC-HOOD-NAVY",
+        "name": "Basic Hoodie Big Yale",
+        "size": "M",
+        "qty_on_hand": 8,
+        "location": "Aisle A",
+        "qty_needed": 20,
+        "shortfall": 12,
+        "can_fill_from_stock": false
+      },
+      "db_expected": {
+        "qty_on_hand": 8,
+        "location": "Aisle A",
+        "shortfall": 12,
+        "can_fill_from_stock": false
+      },
+      "matches_db": true
+    },
+    {
+      "id": "check_stock_2",
+      "prompt": "Do we have the Bulldog tee in size XXL?",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-TEE-WHITE",
+        "size": "XXL"
+      },
+      "is_error": true,
+      "output": "No inventory row for CC-TEE-WHITE size XXL. Sizes on file: ['S', 'M', 'L', 'XL'].",
+      "db_expected": {
+        "xxl_row_exists": false,
+        "sizes_on_file": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ]
+      },
+      "purpose": "Confirms the server refuses to invent stock for a size that is not in the database.",
+      "matches_db": true
+    },
+    {
+      "id": "get_invoice_status_1",
+      "prompt": "What's the status of invoice 501 on ticket 101? How much do we owe, is it overdue as of the shop's date, will Bulldog Print Co ship to us right now, and what's their lead time?",
+      "tool": "get_invoice_status",
+      "args": {
+        "invoice_id": 501
+      },
+      "is_error": false,
+      "output": {
+        "invoice_id": 501,
+        "amount": 840,
+        "due_date": "2026-08-28",
+        "status": "open",
+        "description": "Rush reprint CC-TEE-WHITE S",
+        "shop_today": "2026-08-31",
+        "is_overdue": true,
+        "days_overdue": 3,
+        "vendor": {
+          "id": 1,
+          "name": "Bulldog Print Co",
+          "specialty": "apparel reprint",
+          "lead_days": 5
+        },
+        "vendor_open_invoices": [
+          {
+            "id": 501,
+            "amount": 840,
+            "due_date": "2026-08-28"
+          }
+        ],
+        "vendor_will_ship": false
+      },
+      "db_expected": {
+        "amount": 840.0,
+        "due_date": "2026-08-28",
+        "status": "open",
+        "shop_today": "2026-08-31",
+        "days_overdue": 3,
+        "vendor_name": "Bulldog Print Co",
+        "lead_days": 5,
+        "vendor_will_ship": false
+      },
+      "matches_db": true
+    },
+    {
+      "id": "get_rent_status_1",
+      "prompt": "For lease 1 (Chapel Street shop), how much rent is due, on what date, and how many days from the shop's today? How much would be left in checking after paying it?",
+      "tool": "get_rent_status",
+      "args": {
+        "lease_id": 1
+      },
+      "is_error": false,
+      "output": {
+        "lease_id": 1,
+        "space_name": "Chapel Street shop",
+        "landlord": "Elm City Properties",
+        "monthly_rent": 2400,
+        "next_due": "2026-09-02",
+        "notes": null,
+        "shop_today": "2026-08-31",
+        "days_until_due": 2,
+        "is_overdue": false,
+        "cash_accounts": [
+          {
+            "name": "checking",
+            "balance": 3400,
+            "as_of": "2026-08-31",
+            "covers_rent": true,
+            "balance_after_rent": 1000
+          }
+        ]
+      },
+      "db_expected": {
+        "space_name": "Chapel Street shop",
+        "monthly_rent": 2400.0,
+        "next_due": "2026-09-02",
+        "days_until_due": 2,
+        "checking_balance": 3400.0,
+        "balance_after_rent": 1000.0
+      },
+      "matches_db": true
+    },
+    {
+      "id": "extra_check_stock_exact_boundary",
+      "prompt": "(extra) Can we fill an order for exactly 8 medium hoodies from stock?",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-HOOD-NAVY",
+        "size": "M",
+        "qty_needed": 8
+      },
+      "is_error": false,
+      "output": {
+        "sku": "CC-HOOD-NAVY",
+        "name": "Basic Hoodie Big Yale",
+        "size": "M",
+        "qty_on_hand": 8,
+        "location": "Aisle A",
+        "qty_needed": 8,
+        "shortfall": 0,
+        "can_fill_from_stock": true
+      },
+      "db_expected": {
+        "qty_on_hand": 8,
+        "shortfall": 0,
+        "can_fill_from_stock": true
+      },
+      "purpose": "Boundary case: requesting exactly what is on hand must show zero shortfall.",
+      "matches_db": true
+    },
+    {
+      "id": "extra_check_stock_can_fill",
+      "prompt": "(extra) Do we have 5 Yale caps?",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-HAT-BLUE",
+        "size": "OS",
+        "qty_needed": 5
+      },
+      "is_error": false,
+      "output": {
+        "sku": "CC-HAT-BLUE",
+        "name": "Yale Cap",
+        "size": "OS",
+        "qty_on_hand": 40,
+        "location": "Aisle C",
+        "qty_needed": 5,
+        "shortfall": 0,
+        "can_fill_from_stock": true
+      },
+      "db_expected": {
+        "qty_on_hand": 40,
+        "location": "Aisle C",
+        "shortfall": 0,
+        "can_fill_from_stock": true
+      },
+      "purpose": "Happy path where stock fully covers the request.",
+      "matches_db": true
+    },
+    {
+      "id": "extra_check_stock_no_qty",
+      "prompt": "(extra) How many Bulldog tees in size S do we have? (ticket 101's item)",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-TEE-WHITE",
+        "size": "S"
+      },
+      "is_error": false,
+      "output": {
+        "sku": "CC-TEE-WHITE",
+        "name": "Classic Bulldog Tee",
+        "size": "S",
+        "qty_on_hand": 0,
+        "location": "Aisle B"
+      },
+      "db_expected": {
+        "qty_on_hand": 0,
+        "location": "Aisle B"
+      },
+      "purpose": "Optional qty_needed omitted: tool returns stock only, no shortfall fields. Confirms ticket 101's tee is at 0.",
+      "matches_db": true
+    },
+    {
+      "id": "extra_check_stock_unknown_sku",
+      "prompt": "(extra) Do we have red socks in medium?",
+      "tool": "check_stock",
+      "args": {
+        "sku": "CC-SOCK-RED",
+        "size": "M"
+      },
+      "is_error": true,
+      "output": "SKU CC-SOCK-RED is not in inventory.",
+      "db_expected": {
+        "sku_rows_in_inventory": 0
+      },
+      "purpose": "Unknown SKU is refused, not invented.",
+      "matches_db": true
+    },
+    {
+      "id": "extra_get_invoice_status_missing",
+      "prompt": "(extra) What's the status of invoice 999?",
+      "tool": "get_invoice_status",
+      "args": {
+        "invoice_id": 999
+      },
+      "is_error": true,
+      "output": "Invoice 999 not found. Invoices on file: [501].",
+      "db_expected": {
+        "invoice_ids_on_file": [
+          501
+        ]
+      },
+      "purpose": "Missing invoice is refused and the real IDs are listed.",
+      "matches_db": true
+    },
+    {
+      "id": "extra_get_rent_status_missing",
+      "prompt": "(extra) How much rent is due on lease 99?",
+      "tool": "get_rent_status",
+      "args": {
+        "lease_id": 99
+      },
+      "is_error": true,
+      "output": "Lease 99 not found. Leases on file: [1].",
+      "db_expected": {
+        "lease_ids_on_file": [
+          1
+        ]
+      },
+      "purpose": "Missing lease is refused and the real IDs are listed.",
+      "matches_db": true
+    }
+  ]
+}

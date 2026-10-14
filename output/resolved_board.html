@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campus Customs - Resolved board (Problem 9)</title>
+<style>
+  :root { --navy: #00356b; --navy-deep: #0a1f3d; --royal: #2456d3; --powder: #b9d4f1; --off: #f7f5ef; --green: #1e8e3e; --muted: #5d6779; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 16px/1.55 Inter, system-ui, "Segoe UI", Roboto, sans-serif; color: #1b2434;
+    background: var(--navy-deep) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23ffffff' fill-opacity='0.085'%3E%3Cpath transform='translate(9 6) scale(0.42)' d='M8 6H46V11Q40 11 38 13L52 40L70 14Q68 11 63 11V6H92V11Q86 11 83 15L57 57V84Q57 87 66 88V94H34V88Q43 87 43 84V57L17 15Q14 11 8 11Z'/%3E%3Cpath transform='translate(69 66) scale(0.42)' d='M8 6H46V11Q40 11 38 13L52 40L70 14Q68 11 63 11V6H92V11Q86 11 83 15L57 57V84Q57 87 66 88V94H34V88Q43 87 43 84V57L17 15Q14 11 8 11Z'/%3E%3C/g%3E%3C/svg%3E"); }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 18px 60px; }
+  header { color: #fff; margin-bottom: 20px; }
+  header h1 { margin: 4px 0; font-size: 2rem; font-weight: 900; letter-spacing: -0.02em; }
+  header p { margin: 0; color: #d6e3f5; max-width: 900px; }
+  .eyebrow { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--royal); }
+  header .eyebrow { color: var(--powder); }
+  .summary { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .summary span { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 5px 12px; border-radius: 999px; font-size: 0.85rem; font-weight: 600; }
+  .card { background: var(--off); border-radius: 18px; padding: 20px 22px; margin: 0 0 22px; box-shadow: 0 30px 70px rgba(0,0,0,0.35); }
+  .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .card h2 { margin: 2px 0 6px; font-size: 1.4rem; color: #0f2747; }
+  .from { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+  .stamp { color: var(--green); border: 3px solid var(--green); background: #e9f6ec; border-radius: 8px; padding: 4px 12px; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; transform: rotate(-4deg); white-space: nowrap; }
+  .decisions { margin: 0 0 12px; padding-left: 20px; font-size: 0.92rem; }
+  img { width: 100%; border-radius: 12px; border: 1px solid rgba(10,31,61,0.15); display: block; }
+  .cap { font-size: 0.8rem; color: var(--muted); margin: 6px 0 0; }
+  footer { color: #d6e3f5; font-size: 0.85rem; }
+  footer code { color: #fff; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Campus Customs &middot; Problem 9</span>
+    <h1>The Agent Desk, all three tickets resolved</h1>
+    <p>Screenshots of my React board (<code>frontend/</code>) after the Problem 9 run on October 13, 2026. Each one has a ticket selected, showing the agents, what they said, the summary, and the green Resolved stamp. Checking ends at $160.00.</p>
+    <div class="summary"><span>#101 Resolved &middot; &minus;$840.00</span><span>#102 Resolved &middot; &minus;$2,400.00</span><span>#103 Resolved &middot; $0.00</span><span>Checking $3,400.00 &rarr; $160.00</span></div>
+  </header>
+  
+  <section class="card">
+    <div class="card-head">
+      <div><span class="eyebrow">Ticket #101 &middot; customer order &middot; run 75be36b0c725</span>
+        <h2>Bulldog tee <span class="from">from Tauhid Zaman</span></h2></div>
+      <span class="stamp">&#10003; Resolved</span>
+    </div>
+    <p>No size S Bulldog tee in stock (0 on hand for 1 ordered). Accounting queued payment of overdue invoice 501 ($840.00) so the apparel vendor will ship again; the human approved it and it was paid. Customer Service drafted a reply to Tauhid with no restock date.</p>
+    <ul class="decisions"><li>Approval #1 (invoice payment, $840.00): approved and paid</li></ul>
+    <a href="screenshots/p9-board-ticket-101.png" target="_blank"><img src="screenshots/p9-board-ticket-101.png" alt="The Agent Desk board with ticket 101 selected and resolved" loading="lazy"></a>
+    <p class="cap">Click the screenshot to open it full size.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <div><span class="eyebrow">Ticket #102 &middot; rent notice &middot; run cc2b8d1e2b06</span>
+        <h2>Rent due <span class="from">from Elm City Properties</span></h2></div>
+      <span class="stamp">&#10003; Resolved</span>
+    </div>
+    <p>Facilities confirmed the notice against lease 1: $2,400.00 rent for the Chapel Street shop, due 2026-09-02 (2 days after the shop date). Accounting queued the rent payment; the human approved it and it was paid.</p>
+    <ul class="decisions"><li>Approval #2 (rent payment, $2,400.00): approved and paid</li></ul>
+    <a href="screenshots/p9-board-ticket-102.png" target="_blank"><img src="screenshots/p9-board-ticket-102.png" alt="The Agent Desk board with ticket 102 selected and resolved" loading="lazy"></a>
+    <p class="cap">Click the screenshot to open it full size.</p>
+  </section>
+  <section class="card">
+    <div class="card-head">
+      <div><span class="eyebrow">Ticket #103 &middot; price override &middot; run f1b9c9447b5d</span>
+        <h2>Bulk hoodie discount <span class="from">from Yale AI Club</span></h2></div>
+      <span class="stamp">&#10003; Resolved</span>
+    </div>
+    <p>The Boss offered the store&#x27;s 10% bulk discount ($52.20 per hoodie; 20 qualifies). 8 of the 20 are in stock. Accounting prepared a $264.00 purchase order for the 12-unit shortfall with a cash warning; approving it was refused because $264.00 is more than the $160.00 in checking, so the human rejected it. Customer Service drafted a reply to the Yale AI Club with no restock date.</p>
+    <ul class="decisions"><li>Approval #3 (purchase order, $264.00): approve refused: $264.00 is more than the $160.00 in checking; then rejected (Insufficient cash to cover cost of restock order)</li></ul>
+    <a href="screenshots/p9-board-ticket-103.png" target="_blank"><img src="screenshots/p9-board-ticket-103.png" alt="The Agent Desk board with ticket 103 selected and resolved" loading="lazy"></a>
+    <p class="cap">Click the screenshot to open it full size.</p>
+  </section>
+  <footer>
+    <p>How these were captured: the board was opened at <code>http://localhost:5173</code> against the live backend and the working database right after the run. Each ticket's real run id (from <code>output/audit_trail.json</code>) was loaded the same way the board remembers runs in the browser, then the ticket was selected and the full page was captured. Files: <code>output/screenshots/p9-board-ticket-101.png</code>, <code>-102.png</code>, <code>-103.png</code>.</p>
+  </footer>
+</div>
+</body>
+</html>
